@@ -1,20 +1,14 @@
-import { effect, Injectable, signal, WritableSignal } from '@angular/core';
-import { Subject } from 'rxjs';
-
-export interface AppState {
-  preset: string;
-  primary: string;
-  surface: string | undefined | null;
-  darkMode: boolean;
-}
+import { effect, Injectable, signal, WritableSignal } from "@angular/core";
+import { Subject } from "rxjs";
+import { AppState } from "../interfaces/appstate";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
-export class LayoutService {
+export class Layout {
   _appState: AppState = {
-    preset: 'Aura',
-    primary: 'emerald',
+    preset: "Aura",
+    primary: "emerald",
     surface: null,
     darkMode: false,
   };
@@ -73,9 +67,9 @@ export class LayoutService {
   toggleDarkMode(appState?: AppState): void {
     const _appState = appState || this.appState();
     if (_appState.darkMode) {
-      document.documentElement.classList.add('p-dark');
+      document.documentElement.classList.add("p-dark");
     } else {
-      document.documentElement.classList.remove('p-dark');
+      document.documentElement.classList.remove("p-dark");
     }
   }
 

@@ -1,12 +1,12 @@
-import { Component, computed, inject } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
-import { StyleClassModule } from 'primeng/styleclass';
-import { AppConfig } from './app.config';
-import { LayoutService } from '../service/layout.service';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from "@angular/core";
+import { ButtonModule } from "primeng/button";
+import { StyleClassModule } from "primeng/styleclass";
+import { AppConfig } from "./app.config";
+import { Layout } from "../services/layout";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-topbar',
+  selector: "app-topbar",
   standalone: true,
   imports: [CommonModule, ButtonModule, StyleClassModule, AppConfig],
   template: `
@@ -161,12 +161,12 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export class AppTopbar {
-  layoutService: LayoutService = inject(LayoutService);
+  layoutService: Layout = inject(Layout);
 
   isDarkMode = computed(() => this.layoutService.appState().darkMode);
 
   toggleDarkMode() {
-    this.layoutService.appState.update((state) => ({
+    this.layoutService.appState.update((state: any) => ({
       ...state,
       darkMode: !state.darkMode,
     }));
