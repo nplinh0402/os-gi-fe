@@ -1,7 +1,6 @@
 import { Component, inject, OnInit, OnDestroy } from "@angular/core";
 import { ChartModule } from "primeng/chart";
 import { AutoCompleteModule } from "primeng/autocomplete";
-import { DropdownModule } from "primeng/dropdown";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Layout } from "../../../services/layout";
