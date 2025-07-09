@@ -12,7 +12,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
 
-interface Shop {
+interface ShopItem {
   id: string;
   name: string;
   category: string;
@@ -47,8 +47,8 @@ interface Shop {
   providers: [MessageService]
 })
 export class Shop implements OnInit {
-  shops: Shop[] = [];
-  filteredShops: Shop[] = [];
+  shops: ShopItem[] = [];
+  filteredShops: ShopItem[] = [];
   searchQuery: string = '';
   loading: boolean = false;
 
@@ -223,11 +223,10 @@ export class Shop implements OnInit {
     }
   }
 
-  trackByShopId(index: number, shop: Shop): string {
     return shop.id;
   }
 
-  onClick(shop: Shop) {
+  onClick(shop: ShopItem) {
     this.messageService.add({
       severity: 'info',
       summary: 'Shop Selected',
@@ -238,7 +237,7 @@ export class Shop implements OnInit {
     // this.router.navigate(['/shops', shop.id]);
   }
 
-  viewShop(shop: Shop, event: Event) {
+  viewShop(shop: ShopItem, event: Event) {
     event.stopPropagation();
     this.messageService.add({
       severity: 'info',
@@ -247,7 +246,7 @@ export class Shop implements OnInit {
     });
   }
 
-  editShop(shop: Shop, event: Event) {
+  editShop(shop: ShopItem, event: Event) {
     event.stopPropagation();
     this.messageService.add({
       severity: 'info',
@@ -256,7 +255,7 @@ export class Shop implements OnInit {
     });
   }
 
-  viewAnalytics(shop: Shop, event: Event) {
+  viewAnalytics(shop: ShopItem, event: Event) {
     event.stopPropagation();
     this.messageService.add({
       severity: 'info',
