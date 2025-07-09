@@ -14,9 +14,11 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { ToastModule } from "primeng/toast";
 import { CommonModule } from "@angular/common";
+import { RouterModule } from "@angular/router";
 @Component({
   selector: "app-login",
   imports: [
+    RouterModule,
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,

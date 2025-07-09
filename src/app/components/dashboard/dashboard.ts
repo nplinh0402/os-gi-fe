@@ -3,8 +3,7 @@ import { ProductOverviewWidget } from "./productoverviewwidget/productoverviewwi
 import { RecentActivityWidget } from "./recentactivitywidget/recentactivitywidget";
 import { SalesTrendWidget } from "./salestrendwidget/salestrendwidget";
 import { StatsWidget } from "./statswidget/statswidget";
-import { AppTopbar } from "../app.topbar";
-import { AppFooter } from "../app.footer";
+
 @Component({
   selector: "app-dashboard",
   imports: [
@@ -12,8 +11,6 @@ import { AppFooter } from "../app.footer";
     RecentActivityWidget,
     SalesTrendWidget,
     StatsWidget,
-    AppTopbar,
-    AppFooter,
   ],
   templateUrl: "./dashboard.html",
   styleUrl: "./dashboard.scss",
