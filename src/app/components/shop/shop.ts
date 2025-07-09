@@ -223,6 +223,7 @@ export class Shop implements OnInit {
     }
   }
 
+  trackById(index: number, shop: ShopItem) {
     return shop.id;
   }
 
