@@ -4,7 +4,7 @@ export interface User {
   name?: string;
   username: string;
   password: string;
-  createdAt?: number;
+  created_at?: number;
   lastLogin?: number;
   //   access_token?: string;
   //   refreh_token?: string;

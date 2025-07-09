@@ -1,7 +1,7 @@
 <div class="flex flex-col w-full max-w-7xl mx-auto gap-6 flex-1">
 
     <div class="card">
-        <p-table [columns]="selectedColumns" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table [columns]="selectedColumns" [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template #caption>
                 <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
                     selectedItemsLabel="{0} columns selected" [style]="{ 'min-width': '200px' }"
@@ -19,7 +19,12 @@
                 <tr>
                     <td>{{product["id"]}}</td>
                     <td *ngFor="let col of columns">
-                        {{ product[col.field] }}
+                        <ng-container *ngIf="col.field === 'created_at'; else defaultField">
+                            {{ product[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }}
+                        </ng-container>
+                        <ng-template #defaultField>
+                            {{ product[col.field] }}
+                        </ng-template>
                     </td>
                 </tr>
             </ng-template>
