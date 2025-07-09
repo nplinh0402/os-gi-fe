@@ -5,6 +5,7 @@ import { Company } from "./components/company/company";
 import { Transaction } from "./components/transaction/transaction";
 import { UserComponent } from "./components/user/user";
 import { Dashboard } from "./components/dashboard/dashboard";
+import { AuthGuard } from "./guards/auth-guard";
 
 export const routes: Routes = [
   {
@@ -14,37 +15,41 @@ export const routes: Routes = [
   {
     path: "dashboard",
     component: Dashboard,
+    canActivate: [AuthGuard],
+    data: {
+      roles: ["admin", "user"],
+    },
   },
   {
     path: "shop",
     component: ShopComponent,
-    // canActivate: [A],
-    // data: {
-    //   accessRole: ["admin", "user"],
-    // },
+    canActivate: [AuthGuard],
+    data: {
+      roles: ["admin", "user"],
+    },
   },
   {
     path: "company",
     component: Company,
-    // canActivate: [AuthRoleGuard],
+    canActivate: [AuthGuard],
     data: {
-      accessRole: ["admin", "user"],
+      roles: ["admin", "user"],
     },
   },
   {
     path: "transactions",
     component: Transaction,
-    // canActivate: [AuthRoleGuard],
+    canActivate: [AuthGuard],
     data: {
-      accessRole: ["admin", "user"],
+      roles: ["admin", "user"],
     },
   },
   {
     path: "users",
     component: UserComponent,
-    // canActivate: [AuthRoleGuard],
+    canActivate: [AuthGuard],
     data: {
-      accessRole: ["admin"],
+      roles: ["admin", "user"],
     },
   },
   //   {

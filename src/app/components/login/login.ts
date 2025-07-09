@@ -14,6 +14,9 @@ import { PasswordModule } from "primeng/password";
 import { ToastModule } from "primeng/toast";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
+
+import { ApiService } from "../../services/api";
+
 @Component({
   selector: "app-login",
   imports: [
@@ -36,6 +39,7 @@ export class Login {
 
   constructor(
     private fb: FormBuilder,
+    private api: ApiService, // ✅ inject ApiService
     private messageService: MessageService,
     private router: Router
   ) {
@@ -52,37 +56,33 @@ export class Login {
     }
 
     this.loading = true;
-
     const loginData = this.loginForm.value;
 
-    // Simulate login process
-    setTimeout(() => {
-      this.loading = false;
-
-      // Simple validation for demo purposes
-      if (loginData.username && loginData.password) {
+    this.api.create("auth/login", loginData).subscribe({
+      next: (res: any) => {
+        this.loading = false;
+        console.log("Res: " + JSON.stringify(res));
         this.messageService.add({
           severity: "success",
           summary: "Login Successful",
-          detail: `Welcome ${loginData.username}!`,
+          detail: `Welcome ${res.user?.username || loginData.username}!`,
         });
 
-        // Store user info and redirect to dashboard
-        localStorage.setItem(
-          "user",
-          JSON.stringify({ username: loginData.username })
-        );
+        localStorage.setItem("access_token", res.access_token);
+        localStorage.setItem("refresh_token", res.refresh_token);
+        localStorage.setItem("role", res.role);
 
-        setTimeout(() => {
-          this.router.navigate(["/dashboard"]);
-        }, 1000);
-      } else {
+        this.router.navigate(["/dashboard"]);
+      },
+      error: (err) => {
+        this.loading = false;
+
         this.messageService.add({
           severity: "error",
           summary: "Login Failed",
-          detail: "Please enter valid credentials",
+          detail: err.error?.message || "Invalid username or password",
         });
-      }
-    }, 1000);
+      },
+    });
   }
 }

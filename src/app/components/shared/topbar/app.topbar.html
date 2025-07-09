@@ -67,12 +67,8 @@
                     System</span>
             </span>
         </div>
+
         <div class="flex items-center gap-2">
-            <button type="button"
-                class="cursor-pointer px-4 py-2 text-sm rounded-lg bg-primary text-white hover:bg-primary-600 transition-colors"
-                (click)="navigateToLogin()">
-                Login
-            </button>
             <button type="button"
                 class="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 transition-all text-surface-900 dark:text-surface-0 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0 dark:focus-visible:ring-offset-surface-950"
                 (click)="toggleDarkMode()">
@@ -81,12 +77,15 @@
                 'pi-sun': !isDarkMode()
               }"></i>
             </button>
+
             <div class="relative">
                 <p-button pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein"
                     leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true"
-                    icon="pi pi-cog" text rounded aria-label="Settings" />
+                    icon="pi pi-palette" text rounded aria-label="Settings" />
                 <app-config class="hidden" />
             </div>
+            <p-menu #menu [model]="items" [popup]="true" />
+            <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-v" />
         </div>
     </div>
 </div>

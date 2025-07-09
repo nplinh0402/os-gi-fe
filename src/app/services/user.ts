@@ -11,6 +11,8 @@ export class UserService {
         code: "f230fh0g3",
         name: "phatvh",
         username: "admin",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -19,6 +21,8 @@ export class UserService {
         code: "f230fh0g2",
         name: "phatvh",
         username: "admin1",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -27,6 +31,8 @@ export class UserService {
         code: "f330fh0g3",
         name: "phatvh",
         username: "admin2",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -35,6 +41,8 @@ export class UserService {
         code: "f230fh0g4",
         name: "phatvh",
         username: "admin3",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -48,6 +56,7 @@ export class UserService {
         code: "f230fh0g3",
         name: "phatvh",
         username: "admin",
+        password: "123456",
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -55,6 +64,7 @@ export class UserService {
         id: 2,
         code: "f230fh0g2",
         name: "phatvh",
+        password: "123456",
         username: "admin1",
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
@@ -64,6 +74,8 @@ export class UserService {
         code: "f330fh0g3",
         name: "phatvh",
         username: "admin2",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
@@ -72,6 +84,8 @@ export class UserService {
         code: "f230fh0g4",
         name: "phatvh",
         username: "admin3",
+        password: "123456",
+
         createdAt: 1750630512595,
         lastLogin: 1750630512595,
       },
