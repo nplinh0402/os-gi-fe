@@ -1,9 +1,9 @@
 import { Routes } from "@angular/router";
 import { Login } from "./components/login/login";
-import { Shop } from "./components/shop/shop";
+import { ShopComponent } from "./components/shop/shop";
 import { Company } from "./components/company/company";
 import { Transaction } from "./components/transaction/transaction";
-import { User } from "./components/user/user";
+import { UserComponent } from "./components/user/user";
 import { Dashboard } from "./components/dashboard/dashboard";
 
 export const routes: Routes = [
@@ -16,12 +16,12 @@ export const routes: Routes = [
     component: Dashboard,
   },
   {
-    path: "shops",
-    component: Shop,
+    path: "shop",
+    component: ShopComponent,
     // canActivate: [A],
-    data: {
-      accessRole: ["admin", "user"],
-    },
+    // data: {
+    //   accessRole: ["admin", "user"],
+    // },
   },
   {
     path: "company",
@@ -41,20 +41,20 @@ export const routes: Routes = [
   },
   {
     path: "users",
-    component: User,
+    component: UserComponent,
     // canActivate: [AuthRoleGuard],
     data: {
       accessRole: ["admin"],
     },
   },
-  {
-    path: "users/:id",
-    component: User,
-    // canActivate: [AuthRoleGuard],
-    data: {
-      accessRole: ["admin", "user"],
-    },
-  },
+  //   {
+  //     path: "users/:id",
+  //     component: User,
+  //     // canActivate: [AuthRoleGuard],
+  //     data: {
+  //       accessRole: ["admin", "user"],
+  //     },
+  //   },
   {
     path: "",
     redirectTo: "dashboard",

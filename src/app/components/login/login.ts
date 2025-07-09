@@ -6,7 +6,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { HttpClient, provideHttpClient } from "@angular/common/http";
 
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -59,7 +58,7 @@ export class Login {
     // Simulate login process
     setTimeout(() => {
       this.loading = false;
-      
+
       // Simple validation for demo purposes
       if (loginData.username && loginData.password) {
         this.messageService.add({
@@ -67,12 +66,15 @@ export class Login {
           summary: "Login Successful",
           detail: `Welcome ${loginData.username}!`,
         });
-        
+
         // Store user info and redirect to dashboard
-        localStorage.setItem("user", JSON.stringify({ username: loginData.username }));
-        
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ username: loginData.username })
+        );
+
         setTimeout(() => {
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(["/dashboard"]);
         }, 1000);
       } else {
         this.messageService.add({
