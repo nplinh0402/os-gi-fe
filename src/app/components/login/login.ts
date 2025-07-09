@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, provideHttpClient } from "@angular/common/http";
 
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -14,7 +14,7 @@ import { InputTextModule } from "primeng/inputtext";
 import { PasswordModule } from "primeng/password";
 import { ToastModule } from "primeng/toast";
 import { CommonModule } from "@angular/common";
-import { RouterModule } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 @Component({
   selector: "app-login",
   imports: [
@@ -37,8 +37,8 @@ export class Login {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     this.loginForm = this.fb.group({
       username: ["", Validators.required],
@@ -56,28 +56,31 @@ export class Login {
 
     const loginData = this.loginForm.value;
 
-    // Replace with your API endpoint
-    this.http
-      .post<any>("https://your-api.com/auth/login", loginData)
-      .subscribe({
-        next: (response) => {
-          this.loading = false;
-          this.messageService.add({
-            severity: "success",
-            summary: "Login Successful",
-            detail: `Welcome ${response.username || loginData.username}`,
-          });
-          // Optionally, save token or redirect
-          localStorage.setItem("token", response.token);
-        },
-        error: (err) => {
-          this.loading = false;
-          this.messageService.add({
-            severity: "error",
-            summary: "Login Failed",
-            detail: err.error?.message || "Invalid credentials",
-          });
-        },
-      });
+    // Simulate login process
+    setTimeout(() => {
+      this.loading = false;
+      
+      // Simple validation for demo purposes
+      if (loginData.username && loginData.password) {
+        this.messageService.add({
+          severity: "success",
+          summary: "Login Successful",
+          detail: `Welcome ${loginData.username}!`,
+        });
+        
+        // Store user info and redirect to dashboard
+        localStorage.setItem("user", JSON.stringify({ username: loginData.username }));
+        
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 1000);
+      } else {
+        this.messageService.add({
+          severity: "error",
+          summary: "Login Failed",
+          detail: "Please enter valid credentials",
+        });
+      }
+    }, 1000);
   }
 }

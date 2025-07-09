@@ -4,6 +4,7 @@ import { StyleClassModule } from "primeng/styleclass";
 import { AppConfig } from "./app.config";
 import { Layout } from "../services/layout";
 import { CommonModule } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-topbar",
@@ -129,6 +130,13 @@ import { CommonModule } from "@angular/common";
         <div class="flex items-center gap-2">
           <button
             type="button"
+            class="cursor-pointer px-4 py-2 text-sm rounded-lg bg-primary text-white hover:bg-primary-600 transition-colors"
+            (click)="navigateToLogin()"
+          >
+            Login
+          </button>
+          <button
+            type="button"
             class="cursor-pointer w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-100 dark:hover:bg-surface-800 transition-all text-surface-900 dark:text-surface-0 focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-surface-0 dark:focus-visible:ring-offset-surface-950"
             (click)="toggleDarkMode()"
           >
@@ -162,8 +170,13 @@ import { CommonModule } from "@angular/common";
 })
 export class AppTopbar {
   layoutService: Layout = inject(Layout);
+  router = inject(Router);
 
   isDarkMode = computed(() => this.layoutService.appState().darkMode);
+
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 
   toggleDarkMode() {
     this.layoutService.appState.update((state: any) => ({
