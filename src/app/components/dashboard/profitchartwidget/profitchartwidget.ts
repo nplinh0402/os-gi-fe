@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, OnDestroy } from "@angular/core";
 import { ChartModule } from "primeng/chart";
-import { DropdownModule } from "primeng/dropdown";
+import { AutoCompleteModule } from "primeng/autocomplete";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { Layout } from "../../../services/layout";
@@ -9,7 +9,7 @@ import { debounceTime, Subscription } from "rxjs";
 @Component({
   selector: "profit-chart-widget",
   standalone: true,
-  imports: [CommonModule, ChartModule, DropdownModule, FormsModule],
+  imports: [CommonModule, ChartModule, AutoCompleteModule, FormsModule],
   templateUrl: "./profitchartwidget.html",
 })
 export class ProfitChartWidget implements OnInit, OnDestroy {
