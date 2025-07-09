@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
+import { HttpClient, provideHttpClient } from "@angular/common/http";
 
 import { MessageService } from "primeng/api";
 import { ButtonModule } from "primeng/button";
@@ -14,7 +15,6 @@ import { PasswordModule } from "primeng/password";
 import { ToastModule } from "primeng/toast";
 import { CommonModule } from "@angular/common";
 import { Router, RouterModule } from "@angular/router";
-
 @Component({
   selector: "app-login",
   imports: [
