@@ -1,1 +1,49 @@
-<p>company works!</p>
+<!-- <app-pagetitle title="{{'PAGE.REPORT.Company' | translate}}" [breadcrumbItems]="breadCrumbItems"></app-pagetitle> -->
+
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <h1 class="logo">SÀN</h1>
+        <nav class="breadcrumb">
+            <span>Business</span>
+            <span class="separator">></span>
+            <span class="current">Companies</span>
+        </nav>
+    </header>
+
+    <!-- Companies Grid -->
+    <main class="companies-grid">
+        <div *ngFor="let company of companies" class="company-card" (click)="onClick(company)">
+            <div class="company-avatar" [style.backgroundColor]="company.avatarColor || '#4A5FBF'">
+                <div class="avatar-icon">{{ company.initials }}</div>
+            </div>
+            <div class="company-name">
+                <span class="building-icon">🏢</span>
+                {{ company.name }}
+            </div>
+            <div class="company-stats">
+                <div class="stat">
+                    <div class="stat-label">Employees</div>
+                    <div class="stat-value">{{ company.employees }}</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Revenue</div>
+                    <div class="stat-value">{{ company.revenue | currency }}</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">Industry</div>
+                    <div class="stat-value">{{ company.industry }}</div>
+                </div>
+            </div>
+            <div class="company-location">
+                <span class="location-icon">📍</span>
+                {{ company.location }}
+            </div>
+        </div>
+    </main>
+
+    <!-- Load More -->
+    <div class="load-more">
+        <a href="#" class="load-more-link" (click)="loadMore($event)">Load more</a>
+    </div>
+</div>
