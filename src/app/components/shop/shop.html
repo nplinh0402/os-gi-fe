@@ -1,1 +1,180 @@
-<p>shop works!</p>
+<div class="flex flex-col w-full max-w-7xl mx-auto gap-6 flex-1">
+  <!-- Header Section -->
+  <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-700">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-4">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl font-bold text-primary">SÀN</span>
+        </div>
+        <div class="flex items-center gap-2 text-sm text-surface-600 dark:text-surface-400">
+          <span>Ecommerce</span>
+          <i class="pi pi-angle-right text-xs"></i>
+          <span class="text-surface-900 dark:text-surface-0 font-medium">Shops</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <p-iconfield>
+          <p-inputicon class="pi pi-search" />
+          <input 
+            pInputText 
+            [(ngModel)]="searchQuery" 
+            placeholder="Search shops..." 
+            class="p-inputtext-sm"
+            (ngModelChange)="filterShops()"
+          />
+        </p-iconfield>
+        <p-button 
+          icon="pi pi-plus" 
+          label="Add Shop" 
+          size="small"
+          (onClick)="addNewShop()"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Shops Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div 
+      *ngFor="let shop of filteredShops; trackBy: trackByShopId"
+      class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-700 hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-primary-200 dark:hover:border-primary-700"
+      (click)="onClick(shop)"
+    >
+      <!-- Shop Avatar -->
+      <div class="flex items-center justify-center mb-4">
+        <div 
+          class="w-16 h-16 rounded-full flex items-center justify-center text-white font-bold text-xl"
+          [style.background-color]="shop.avatarColor || '#4A5FBF'"
+        >
+          {{ getShopInitials(shop.name) }}
+        </div>
+      </div>
+
+      <!-- Shop Name -->
+      <div class="text-center mb-4">
+        <h3 class="text-lg font-semibold text-surface-900 dark:text-surface-0 mb-1">
+          {{ shop.name }}
+        </h3>
+        <p class="text-sm text-surface-600 dark:text-surface-400">
+          {{ shop.category }}
+        </p>
+      </div>
+
+      <!-- Owner Information -->
+      <div class="flex items-center gap-2 mb-4 p-3 bg-surface-50 dark:bg-surface-800 rounded-lg">
+        <i class="pi pi-user text-surface-600 dark:text-surface-400"></i>
+        <span class="text-sm text-surface-700 dark:text-surface-300">
+          {{ shop.ownerName }}
+        </span>
+      </div>
+
+      <!-- Statistics -->
+      <div class="space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-box text-primary"></i>
+            <span class="text-sm text-surface-600 dark:text-surface-400">Products</span>
+          </div>
+          <span class="font-semibold text-surface-900 dark:text-surface-0">
+            {{ shop.products | number }}
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-wallet text-green-500"></i>
+            <span class="text-sm text-surface-600 dark:text-surface-400">Wallet</span>
+          </div>
+          <span class="font-semibold text-green-600">
+            {{ shop.wallet | currency:'USD':'symbol':'1.2-2' }}
+          </span>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-star text-yellow-500"></i>
+            <span class="text-sm text-surface-600 dark:text-surface-400">Rating</span>
+          </div>
+          <div class="flex items-center gap-1">
+            <span class="font-semibold text-surface-900 dark:text-surface-0">
+              {{ shop.rating }}
+            </span>
+            <span class="text-xs text-surface-500">({{ shop.reviews }})</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <i class="pi pi-circle-fill text-xs" 
+               [class.text-green-500]="shop.status === 'active'"
+               [class.text-red-500]="shop.status === 'inactive'"
+               [class.text-yellow-500]="shop.status === 'pending'">
+            </i>
+            <span class="text-sm text-surface-600 dark:text-surface-400">Status</span>
+          </div>
+          <p-tag 
+            [value]="shop.status" 
+            [severity]="getStatusSeverity(shop.status)"
+            class="text-xs"
+          />
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex gap-2 mt-4 pt-4 border-t border-surface-200 dark:border-surface-700">
+        <p-button 
+          icon="pi pi-eye" 
+          size="small" 
+          text 
+          (onClick)="viewShop(shop, $event)"
+          pTooltip="View Details"
+        />
+        <p-button 
+          icon="pi pi-pencil" 
+          size="small" 
+          text 
+          (onClick)="editShop(shop, $event)"
+          pTooltip="Edit Shop"
+        />
+        <p-button 
+          icon="pi pi-chart-line" 
+          size="small" 
+          text 
+          (onClick)="viewAnalytics(shop, $event)"
+          pTooltip="Analytics"
+        />
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div 
+    *ngIf="filteredShops.length === 0" 
+    class="bg-surface-0 dark:bg-surface-900 p-12 rounded-xl border border-surface-200 dark:border-surface-700 text-center"
+  >
+    <i class="pi pi-shop text-6xl text-surface-300 dark:text-surface-600 mb-4"></i>
+    <h3 class="text-xl font-semibold text-surface-700 dark:text-surface-300 mb-2">
+      No shops found
+    </h3>
+    <p class="text-surface-500 dark:text-surface-400 mb-6">
+      {{ searchQuery ? 'Try adjusting your search criteria' : 'Get started by adding your first shop' }}
+    </p>
+    <p-button 
+      *ngIf="!searchQuery"
+      icon="pi pi-plus" 
+      label="Add First Shop" 
+      (onClick)="addNewShop()"
+    />
+  </div>
+
+  <!-- Loading State -->
+  <div 
+    *ngIf="loading" 
+    class="bg-surface-0 dark:bg-surface-900 p-12 rounded-xl border border-surface-200 dark:border-surface-700 text-center"
+  >
+    <p-progressSpinner strokeWidth="3" />
+    <p class="text-surface-600 dark:text-surface-400 mt-4">Loading shops...</p>
+  </div>
+</div>
+
+<p-toast />
