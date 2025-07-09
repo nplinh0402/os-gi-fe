@@ -10,7 +10,7 @@ import { debounceTime, Subscription } from "rxjs";
 @Component({
   selector: "profit-chart-widget",
   standalone: true,
-  imports: [CommonModule, ChartModule, AutoCompleteModule, FormsModule, DropdownModule],
+  imports: [CommonModule, ChartModule, AutoCompleteModule, FormsModule],
   templateUrl: "./profitchartwidget.html",
 })
 export class ProfitChartWidget implements OnInit, OnDestroy {
