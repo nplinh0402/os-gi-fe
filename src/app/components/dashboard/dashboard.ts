@@ -1,21 +1,16 @@
 import { Component } from "@angular/core";
 import { ProductOverviewWidget } from "./productoverviewwidget/productoverviewwidget";
 import { RecentActivityWidget } from "./recentactivitywidget/recentactivitywidget";
-import { CryptoStatsWidget } from "./cryptostatswidget/cryptostatswidget";
-import { ProfitChartWidget } from "./profitchartwidget/profitchartwidget";
-import { VolumeChartWidget } from "./volumechartwidget/volumechartwidget";
-import { TranslateModule } from "@ngx-translate/core";
+import { SalesTrendWidget } from "./salestrendwidget/salestrendwidget";
+import { StatsWidget } from "./statswidget/statswidget";
 
 @Component({
   selector: "app-dashboard",
-  standalone: true,
   imports: [
     ProductOverviewWidget,
     RecentActivityWidget,
-    CryptoStatsWidget,
-    ProfitChartWidget,
-    VolumeChartWidget,
-    TranslateModule,
+    SalesTrendWidget,
+    StatsWidget,
   ],
   templateUrl: "./dashboard.html",
   styleUrl: "./dashboard.scss",
