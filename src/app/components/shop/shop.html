@@ -36,7 +36,7 @@
   <!-- Shops Grid -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
     <div 
-      *ngFor="let shop of filteredShops; trackBy: trackByShopId"
+      *ngFor="let shop of filteredShops; trackBy: trackById"
       class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-700 hover:shadow-lg transition-all duration-200 cursor-pointer hover:border-primary-200 dark:hover:border-primary-700"
       (click)="onClick(shop)"
     >
