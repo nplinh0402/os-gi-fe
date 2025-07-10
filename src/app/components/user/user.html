@@ -22,11 +22,11 @@
                     <th>Action</th>
                 </tr>
             </ng-template>
-            <ng-template #body let-product let-columns="columns">
+            <ng-template #body let-product let-columns="columns" let-rowIndex="rowIndex">
                 <tr>
-                    <td>{{product["id"]}}</td>
+                    <td>{{ rowIndex + 1 }}</td>
                     <td *ngFor="let col of columns">
-                        <ng-container *ngIf="col.field === 'created_at'||col.field === 'last_login'; else defaultField">
+                        <ng-container *ngIf="col.field === 'created_at'||col.field === 'updated_at'; else defaultField">
                             {{ product[col.field] | date: 'yyyy-MM-dd HH:mm:ss' }}
                         </ng-container>
                         <ng-template #defaultField>
@@ -65,8 +65,8 @@
                 [disabled]="dialogMode === 'view'" />
         </div>
         <div class="flex items-center gap-4 mb-3">
-            <label for="name" class="font-semibold w-24">Name</label>
-            <input pInputText id="name" class="flex-auto" [(ngModel)]="selectedUser.name"
+            <label for="password" class="font-semibold w-24">Password</label>
+            <input pInputText id="password" class="flex-auto" [(ngModel)]="selectedUser.password"
                 [disabled]="dialogMode === 'view'" />
         </div>
         <div class="flex items-center gap-4 mb-3">
@@ -75,9 +75,8 @@
                 [disabled]="dialogMode === 'view'" />
         </div>
         <div class="flex items-center gap-4 mb-3">
-            <label for="created_at" class="font-semibold w-24">Created</label>
-            <input pInputText id="created_at" class="flex-auto"
-                [value]="selectedUser.created_at | date: 'yyyy-MM-dd HH:mm:ss'" disabled />
+            <label for="name" class="font-semibold w-24">Name</label>
+            <input pInputText id="name" class="flex-auto" [value]="selectedUser.name" disabled />
         </div>
 
         <ng-template #footer>

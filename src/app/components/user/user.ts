@@ -77,12 +77,12 @@ export class UserComponent implements OnInit {
 
   private initColumns() {
     this.cols = [
-      { field: "id", header: "ID" },
-      { field: "username", header: "Username" },
+      { field: "id", header: "Code" },
       { field: "name", header: "Name" },
-      { field: "email", header: "Email" },
+      { field: "username", header: "Username" },
+      //   { field: "email", header: "Email" },
       { field: "created_at", header: "Created At" },
-      { field: "lastLogin", header: "Last Login" },
+      { field: "updated_at", header: "Last Login" },
     ];
     this.selectedColumns = [...this.cols];
   }
@@ -112,16 +112,16 @@ export class UserComponent implements OnInit {
         icon: "pi pi-fw pi-eye",
         command: () => this.openDialog("view", user),
       },
-      {
-        label: "Edit",
-        icon: "pi pi-fw pi-pencil",
-        command: () => this.openDialog("edit", user),
-      },
-      { separator: true },
-      {
-        label: "Delete",
-        icon: "pi pi-fw pi-trash",
-      },
+      //   {
+      //     label: "Edit",
+      //     icon: "pi pi-fw pi-pencil",
+      //     command: () => this.openDialog("edit", user),
+      //   },
+      //   { separator: true },
+      //   {
+      //     label: "Delete",
+      //     icon: "pi pi-fw pi-trash",
+      //   },
     ];
   }
   onSubmit() {
@@ -170,8 +170,21 @@ export class UserComponent implements OnInit {
   }
 
   openDialog(mode: "create" | "view" | "edit", user?: User) {
+    if (user == null) {
+      user = {
+        id: 0,
+        username: "",
+        code: "",
+        password: "",
+        name: "",
+        email: "",
+        created_at: 0,
+        lastLogin: 0,
+      };
+    }
     this.dialogMode = mode;
-    console.log(user);
+
+    this.selectedUser = { ...user };
 
     this.visible = true;
   }

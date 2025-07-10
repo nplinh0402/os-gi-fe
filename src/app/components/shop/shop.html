@@ -16,9 +16,9 @@
                     </th>
                 </tr>
             </ng-template>
-            <ng-template #body let-product let-columns="columns">
+            <ng-template #body let-product let-columns="columns" let-rowIndex="rowIndex">
                 <tr (click)="onRowClick(product)" style="cursor: pointer;">
-                    <td>{{ product.code }}</td>
+                    <td>{{ rowIndex + 1}}</td>
                     <td *ngFor="let col of columns">
                         {{ product[col.field] }}
                     </td>
