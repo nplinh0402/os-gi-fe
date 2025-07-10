@@ -1,8 +1,8 @@
 import { Routes } from "@angular/router";
 import { Login } from "./components/login/login";
 import { ShopComponent } from "./components/shop/shop";
-import { Company } from "./components/company/company";
-import { Transaction } from "./components/transaction/transaction";
+import { CompanyComponent } from "./components/company/company";
+import { TransactionComponent } from "./components/transaction/transaction";
 import { UserComponent } from "./components/user/user";
 import { Dashboard } from "./components/dashboard/dashboard";
 import { AuthGuard } from "./guards/auth-guard";
@@ -21,7 +21,7 @@ export const routes: Routes = [
     },
   },
   {
-    path: "shop",
+    path: "shops",
     component: ShopComponent,
     canActivate: [AuthGuard],
     data: {
@@ -29,8 +29,8 @@ export const routes: Routes = [
     },
   },
   {
-    path: "company",
-    component: Company,
+    path: "companys",
+    component: CompanyComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ["admin", "user"],
@@ -38,7 +38,7 @@ export const routes: Routes = [
   },
   {
     path: "transactions",
-    component: Transaction,
+    component: TransactionComponent,
     canActivate: [AuthGuard],
     data: {
       roles: ["admin", "user"],

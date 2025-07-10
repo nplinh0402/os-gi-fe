@@ -1,1 +1,38 @@
-<p>company works!</p>
+<div class="flex flex-col w-full max-w-7xl mx-auto gap-6 flex-1">
+    <!-- Shops Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div *ngFor="let shop of shops"
+            class="cursor-pointer transition-shadow duration-200 hover:shadow-lg rounded-lg bg-surface-0 dark:bg-surface-900"
+            (click)="onClick(shop)">
+
+            <div class="flex flex-col items-center rounded-lg p-4">
+                <!-- Shop Avatar -->
+                <div class=" flex justify-center mb-3">
+                    <div class="flex items-center justify-center rounded-full w-16 h-16 text-xl " [ngStyle]="{
+                 'background-color': shop.avatarColor || '#4A5FBF'
+               }">
+                        {{ shop.initials }}
+                    </div>
+                </div>
+
+                <!-- Shop Owner -->
+                <div class="flex items-center justify-center mb-2">
+                    <i class="pi pi-user mr-2"></i>
+                    <span class="font-semibold">{{ shop.ownerName }}</span>
+                </div>
+
+                <!-- Shop Stats -->
+                <div class="grid grid-cols-2 gap-2 text-center w-full">
+                    <div>
+                        <div class="font-semibold">Products</div>
+                        <div class="text-lg ">{{ shop.products }}</div>
+                    </div>
+                    <div>
+                        <div class="font-semibold ">Wallet</div>
+                        <div class="text-lg">{{ shop.wallet | currency }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

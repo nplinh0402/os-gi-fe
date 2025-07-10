@@ -64,7 +64,8 @@ export class ShopComponent {
 
   constructor(
     private shopService: ShopService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -80,5 +81,9 @@ export class ShopComponent {
     ];
 
     this.selectedColumns = this.cols;
+  }
+  onRowClick(data: any) {
+    const id = data.id;
+    this.router.navigate(["/users"], { queryParams: { shop_id: id } });
   }
 }

@@ -100,6 +100,13 @@ import { FloatLabelModule } from "primeng/floatlabel";
 import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { DrawerModule } from "primeng/drawer";
+import { Router } from "@angular/router";
+interface menuItem {
+  icon: string;
+  label: string;
+  link: string;
+  items?: menuItem[];
+}
 @Component({
   selector: "drawer-headless",
   templateUrl: "./drawer-headless.html",
@@ -207,10 +214,18 @@ import { DrawerModule } from "primeng/drawer";
 })
 export class DrawerHeadless {
   @ViewChild("drawerRef") drawerRef!: Drawer;
-
+  constructor(private router: Router) {}
   closeCallback(e: any): void {
     this.drawerRef.close(e);
   }
-
+  menuItems: menuItem[] = [
+    { icon: "pi pi-chart-line mr-2", label: "Dashboard", link: "/dashboard" },
+    { icon: "pi pi-bitcoin mr-2", label: "Exchange", link: "/companys" },
+    { icon: "pi pi-users mr-2", label: "User", link: "/users" },
+  ];
   visible: boolean = false;
+  navigate(link: string) {
+    this.router.navigate([link]);
+    this.visible = false;
+  }
 }
