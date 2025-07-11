@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormGroup, FormsModule } from "@angular/forms";
+import { FormGroup, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ButtonModule } from "primeng/button";
 import { InputTextModule } from "primeng/inputtext";
 import { IconFieldModule } from "primeng/iconfield";
@@ -18,6 +18,7 @@ import { MessageService } from "primeng/api";
 import { ApiService } from "../../services/api";
 import { Menu } from "primeng/menu";
 import { DialogModule } from "primeng/dialog";
+import { FormBuilder, Validators } from "@angular/forms";
 interface Column {
   field: string;
   header: string;
@@ -43,6 +44,7 @@ interface Column {
     CommonModule,
     Menu,
     DialogModule,
+    ReactiveFormsModule,
   ],
   templateUrl: "./shop.html",
   styleUrl: "./shop.scss",
@@ -64,7 +66,8 @@ export class ShopComponent {
     private readonly shopService: ShopService,
     private readonly messageService: MessageService,
     private readonly cd: ChangeDetectorRef,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -104,7 +107,6 @@ export class ShopComponent {
         });
       },
     });
-    console.log(this.shops);
   }
   onRowClick(data: any) {
     const id = data.id;
@@ -123,13 +125,24 @@ export class ShopComponent {
       updated_by: 0,
     };
     this.dialogMode = mode;
-
     this.selectedShop = { ...shop };
-
+    this.shopForm = this.fb.group({
+      shop_name: [shop.shop_name, Validators.required],
+      account_name: [shop.account_name, Validators.required],
+      email: [shop.email, [Validators.required, Validators.email]],
+      phone_number: [shop.phone_number, Validators.required],
+    });
+    if (mode === "view") {
+      this.shopForm.disable();
+    } else {
+      this.shopForm.enable();
+    }
     this.visible = true;
   }
   closeDialog() {
     this.selectedShop = null;
+    this.shopForm = null;
+    this.visible = false;
   }
   getActions(shop: Shop) {
     return [
@@ -152,8 +165,8 @@ export class ShopComponent {
   }
   onSubmit() {
     if (!this.shopForm?.valid) return;
-
     const shopData = this.shopForm.value;
+    console.log(this.dialogMode);
     if (this.dialogMode === "create") {
       this.apiService.create("/shops", shopData).subscribe({
         next: () => {

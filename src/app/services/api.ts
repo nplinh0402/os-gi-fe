@@ -14,13 +14,13 @@ export class ApiService {
 
   create<T>(endpoint: string, data: any): Observable<T> {
     return this.http
-      .post<{ data: T }>(`${this.baseUrl}/${endpoint}`, data)
+      .post<{ data: T }>(`${this.baseUrl}${endpoint}`, data)
       .pipe(map((res) => res.data));
   }
 
   getDetail<T>(endpoint: string, id: string | number): Observable<T> {
     return this.http
-      .get<{ data: T }>(`${this.baseUrl}/${endpoint}/${id}`)
+      .get<{ data: T }>(`${this.baseUrl}${endpoint}/${id}`)
       .pipe(map((res) => res.data));
   }
 
@@ -32,19 +32,19 @@ export class ApiService {
       });
     }
     return this.http
-      .get<{ data: T }>(`${this.baseUrl}/${endpoint}`, { params: httpParams })
+      .get<{ data: T }>(`${this.baseUrl}${endpoint}`, { params: httpParams })
       .pipe(map((res) => res.data));
   }
 
   update<T>(endpoint: string, id: string | number, data: any): Observable<T> {
     return this.http
-      .put<{ data: T }>(`${this.baseUrl}/${endpoint}/${id}`, data)
+      .put<{ data: T }>(`${this.baseUrl}${endpoint}/${id}`, data)
       .pipe(map((res) => res.data));
   }
 
   delete<T>(endpoint: string, id: string | number): Observable<T> {
     return this.http
-      .delete<{ data: T }>(`${this.baseUrl}/${endpoint}/${id}`)
+      .delete<{ data: T }>(`${this.baseUrl}${endpoint}/${id}`)
       .pipe(map((res) => res.data));
   }
 }
