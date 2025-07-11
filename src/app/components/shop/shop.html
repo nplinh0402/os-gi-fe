@@ -1,8 +1,13 @@
 <div class="flex flex-col w-full max-w-7xl mx-auto gap-6 flex-1">
 
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Shop</div>
-        <p-table [columns]="selectedColumns" [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+        <div class="font-semibold text-xl mb-4 flex justify-between items-center">Shop
+            <button pButton (click)="openDialog('create')">
+                <span pButtonLabel>New</span>
+                <i class="pi pi-plus" pButtonIcon></i>
+            </button>
+        </div>
+        <p-table [columns]="selectedColumns" [value]="shops" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template #caption>
                 <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
                     selectedItemsLabel="{0} columns selected" [style]="{ 'min-width': '200px' }"
@@ -10,10 +15,11 @@
             </ng-template>
             <ng-template #header let-columns>
                 <tr>
-                    <th>Code</th>
+                    <th>#</th>
                     <th *ngFor="let col of columns">
                         {{ col.header }}
                     </th>
+                    <th>Action</th>
                 </tr>
             </ng-template>
             <ng-template #body let-product let-columns="columns" let-rowIndex="rowIndex">
@@ -22,8 +28,56 @@
                     <td *ngFor="let col of columns">
                         {{ product[col.field] }}
                     </td>
+                    <td>
+                        <p-menu #menu [model]="getActions(product)" [popup]="true" appendTo="body" />
+                        <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-h" aria-haspopup="true"
+                            aria-controls="overlay_menu" [text]="true" />
+                    </td>
                 </tr>
             </ng-template>
         </p-table>
     </div>
+</div>
+<div class="card flex justify-center">
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '30rem' }" [closable]="true"
+        [dismissableMask]="true" *ngIf="selectedShop">
+        <ng-template #header>
+            <div class="inline-flex items-center justify-center gap-2">
+                <span class="font-bold whitespace-nowrap">
+                    {{ dialogMode === 'view' ? 'User Details' : (dialogMode === 'edit' ? 'Edit User' : 'Create User') }}
+                </span>
+            </div>
+        </ng-template>
+
+        <span class="text-surface-500 dark:text-surface-400 block mb-4">
+            {{ dialogMode === 'view' ? 'Here are the details of this user.' : 'Fill in the user information.' }}
+        </span>
+
+        <div class="flex items-center gap-4 mb-3">
+            <label for="shop_name" class="font-semibold w-24">Shop Name</label>
+            <input pInputText id="shop_name" class="flex-auto" [(ngModel)]="selectedShop.shop_name"
+                [disabled]="dialogMode === 'view'" />
+        </div>
+        <div class="flex items-center gap-4 mb-3">
+            <label for="account_name" class="font-semibold w-24">Account Name</label>
+            <input pInputText id="account_name" class="flex-auto" [(ngModel)]="selectedShop.account_name"
+                [disabled]="dialogMode === 'view'" />
+        </div>
+        <div class="flex items-center gap-4 mb-3">
+            <label for="email" class="font-semibold w-24">Email</label>
+            <input pInputText id="email" class="flex-auto" [(ngModel)]="selectedShop.email"
+                [disabled]="dialogMode === 'view'" />
+        </div>
+        <div class="flex items-center gap-4 mb-3">
+            <label for="phone_number" class="font-semibold w-24">Phone</label>
+            <input pInputText id="phone_number" class="flex-auto" [(ngModel)]="selectedShop.phone_number"
+                [disabled]="dialogMode === 'view'" />
+        </div>
+
+        <ng-template #footer>
+            <p-button label="Close" [text]="true" severity="secondary" (click)="visible = false" />
+            <p-button *ngIf="dialogMode !== 'view'" label="Save" [outlined]="true" severity="secondary"
+                (click)="onSubmit()" />
+        </ng-template>
+    </p-dialog>
 </div>

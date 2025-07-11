@@ -23,7 +23,7 @@ export class CompanyComponent implements OnInit {
   shops: Shop[] = [];
   breadCrumbItems: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   ngOnInit(): void {
     // Initialize breadcrumb
@@ -136,8 +136,6 @@ export class CompanyComponent implements OnInit {
   }
 
   onClick(shop: Shop): void {
-    console.log("Shop clicked:", shop);
-    // You can navigate to shop details page
     this.router.navigate(["/shops"]);
   }
 

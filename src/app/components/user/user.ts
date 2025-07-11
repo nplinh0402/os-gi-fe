@@ -170,18 +170,16 @@ export class UserComponent implements OnInit {
   }
 
   openDialog(mode: "create" | "view" | "edit", user?: User) {
-    if (user == null) {
-      user = {
-        id: 0,
-        username: "",
-        code: "",
-        password: "",
-        name: "",
-        email: "",
-        created_at: 0,
-        lastLogin: 0,
-      };
-    }
+    user ??= {
+      id: 0,
+      username: "",
+      code: "",
+      password: "",
+      name: "",
+      email: "",
+      created_at: 0,
+      lastLogin: 0,
+    };
     this.dialogMode = mode;
 
     this.selectedUser = { ...user };
