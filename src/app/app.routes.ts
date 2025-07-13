@@ -6,6 +6,8 @@ import { TransactionComponent } from "./components/transaction/transaction";
 import { UserComponent } from "./components/user/user";
 import { Dashboard } from "./components/dashboard/dashboard";
 import { AuthGuard } from "./guards/auth-guard";
+import { UserDetailComponent } from "./components/user/user-detail/user-detail";
+import { MarketComponent } from "./components/market/market";
 
 export const routes: Routes = [
   {
@@ -52,17 +54,21 @@ export const routes: Routes = [
       roles: ["admin", "user"],
     },
   },
-  //   {
-  //     path: "users/:id",
-  //     component: User,
-  //     // canActivate: [AuthRoleGuard],
-  //     data: {
-  //       accessRole: ["admin", "user"],
-  //     },
-  //   },
+  {
+    path: "users/:id",
+    component: UserDetailComponent,
+    canActivate: [AuthGuard],
+    data: {
+      accessRole: ["admin", "user"],
+    },
+  },
+  {
+    path: "market",
+    component: MarketComponent,
+  },
   {
     path: "",
-    redirectTo: "dashboard",
+    redirectTo: "market",
     pathMatch: "full",
   },
 ];

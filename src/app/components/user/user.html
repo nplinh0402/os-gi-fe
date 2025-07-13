@@ -23,7 +23,7 @@
                 </tr>
             </ng-template>
             <ng-template #body let-product let-columns="columns" let-rowIndex="rowIndex">
-                <tr>
+                <tr (click)="onRowClick(product)" style="cursor: pointer;">
                     <td>{{ rowIndex + 1 }}</td>
                     <td *ngFor="let col of columns">
                         <ng-container *ngIf="col.field === 'created_at'||col.field === 'updated_at'; else defaultField">
@@ -33,7 +33,7 @@
                             {{ product[col.field] }}
                         </ng-template>
                     </td>
-                    <td>
+                    <td (click)="onActionClick($event)">
                         <p-menu #menu [model]="getActions(product)" [popup]="true" appendTo="body" />
                         <p-button (click)="menu.toggle($event)" icon="pi pi-ellipsis-h" aria-haspopup="true"
                             aria-controls="overlay_menu" [text]="true" />

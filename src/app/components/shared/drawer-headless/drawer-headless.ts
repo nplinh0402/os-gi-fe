@@ -101,12 +101,8 @@ import { IconFieldModule } from "primeng/iconfield";
 import { InputIconModule } from "primeng/inputicon";
 import { DrawerModule } from "primeng/drawer";
 import { Router } from "@angular/router";
-interface menuItem {
-  icon: string;
-  label: string;
-  link: string;
-  items?: menuItem[];
-}
+import { MenuItem } from "../../../interfaces/menu-item";
+import { menuItems } from "./menu-items";
 @Component({
   selector: "drawer-headless",
   templateUrl: "./drawer-headless.html",
@@ -218,11 +214,17 @@ export class DrawerHeadless {
   closeCallback(e: any): void {
     this.drawerRef.close(e);
   }
-  menuItems: menuItem[] = [
-    { icon: "pi pi-chart-line mr-2", label: "Dashboard", link: "/dashboard" },
-    { icon: "pi pi-bitcoin mr-2", label: "Exchange", link: "/companys" },
-    { icon: "pi pi-users mr-2", label: "User", link: "/users" },
-  ];
+  // Removed local menuItems definition, now using imported menuItems
+  get menuItems() {
+    return menuItems;
+  }
+  get filteredMenuItems(): MenuItem[] {
+    const role = localStorage.getItem("role") || "";
+    console.log(role);
+    return this.menuItems.filter(
+      (item) => !item.roles || item.roles.includes(role)
+    );
+  }
   visible: boolean = false;
   navigate(link: string) {
     this.router.navigate([link]);

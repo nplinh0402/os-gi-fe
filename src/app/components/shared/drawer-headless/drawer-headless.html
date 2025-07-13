@@ -55,7 +55,7 @@
                 </div>
                 <div class="overflow-y-auto">
                     <ul class="list-none p-4 m-0">
-                        <li *ngFor="let menu of menuItems">
+                        <li *ngFor="let menu of filteredMenuItems">
                             <div *ngIf="menu.items?.length" pRipple pStyleClass="@next" enterFromClass="hidden"
                                 enterActiveClass="animate-slidedown" leaveToClass="hidden"
                                 leaveActiveClass="animate-slideup"

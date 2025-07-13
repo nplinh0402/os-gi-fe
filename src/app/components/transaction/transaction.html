@@ -1,7 +1,38 @@
+<p-toast position="top-center" key="confirm" (onClose)="onCloseToast()" [baseZIndex]="5000">
+    <ng-template let-message #headless let-closeFn="closeFn">
+        <section class="flex flex-col p-4 gap-4 w-full bg-primary/70 rounded-xl">
+            <div class="flex items-center gap-5">
+                <i class="pi pi-file-export text-white dark:text-black text-2xl"></i>
+                <span class="font-bold text-base text-white dark:text-black">{{ message.summary }}</span>
+            </div>
+            <div class="flex flex-col gap-2">
+                <p-progressbar [value]="progress" [showValue]="false" [style]="{ height: '4px' }"
+                    class="!bg-primary/80" />
+                <label class="text-sm font-bold text-white dark:text-black">{{ progress }}% uploaded</label>
+            </div>
+            <div class="flex gap-4 mb-4 justify-end">
+                <p-button label="Cancel" (click)="closeFn($event)" size="small" />
+            </div>
+        </section>
+    </ng-template>
+</p-toast>
+<p-toast></p-toast>
+
 <div class="flex flex-col w-full max-w-7xl mx-auto gap-6 flex-1">
 
     <div class="card">
-        <div class="font-semibold text-xl mb-4">Transaction</div>
+        <div class="font-semibold text-xl mb-4 flex justify-between items-center">Transaction
+            <div class="mr-2">
+                <button pButton>
+                    <span pButtonLabel>New</span>
+                    <i class="pi pi-plus" pButtonIcon></i>
+                </button>
+                <button pButton (click)="openDialog('export')">
+                    <span pButtonLabel>Export</span>
+                    <i class="pi pi-file-export" pButtonIcon></i>
+                </button>
+            </div>
+        </div>
         <p-table [columns]="selectedColumns" [value]="transactions" [tableStyle]="{ 'min-width': '50rem' }">
             <ng-template #caption>
                 <p-multiselect display="chip" [options]="cols" [(ngModel)]="selectedColumns" optionLabel="header"
@@ -31,4 +62,37 @@
             </ng-template>
         </p-table>
     </div>
+</div>
+<div class="card flex justify-center">
+    <p-dialog [(visible)]="visible" [modal]="true" [style]="{ width: '30rem' }" [closable]="true"
+        [dismissableMask]="true">
+        <ng-template #header>
+            <div class="inline-flex items-center justify-center gap-2">
+                <span class="font-bold whitespace-nowrap">
+                    Export
+                </span>
+            </div>
+        </ng-template>
+
+        <span class="text-surface-500 dark:text-surface-400 block mb-4">
+            Choose the setting
+        </span>
+
+        <div class="flex items-center gap-4 mb-3">
+            <label for="username" class="font-semibold w-24">Data source</label>
+            <p-autocomplete [dropdown]="true" [(ngModel)]="dataType" placeholder="Type to search..."
+                [suggestions]="filteredItems" (completeMethod)="filterShops($event)" class="w-full">
+            </p-autocomplete>
+        </div>
+        <div class="flex items-center gap-4 mb-3">
+            <label for="password" class="font-semibold w-24">Date</label>
+            <p-datepicker appendTo="body" dateformat="dd.mm.yy" selectionMode="range" showIcon iconDisplay="input"
+                [readonlyInput]="true" class="w-full" [(ngModel)]="rangeDates" />
+        </div>
+
+        <ng-template #footer>
+            <p-button label="Close" [text]="true" severity="secondary" (click)="visible = false" />
+            <p-button label="Export" [outlined]="true" severity="primary" (click)="showExport()" />
+        </ng-template>
+    </p-dialog>
 </div>

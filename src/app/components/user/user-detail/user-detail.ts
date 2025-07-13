@@ -14,12 +14,14 @@ import { ProgressSpinnerModule } from "primeng/progressspinner";
 import { TableModule } from "primeng/table";
 import { MultiSelectModule } from "primeng/multiselect";
 import { DialogModule } from "primeng/dialog";
-
+import { AutoCompleteModule } from "primeng/autocomplete";
 import { MenuItem, MessageService } from "primeng/api";
-import { Menu } from "primeng/menu";
+import { CardModule } from "primeng/card";
+import { PasswordModule } from "primeng/password";
 
-import { ApiService } from "../../services/api";
-import { User } from "../../interfaces/user";
+import { ApiService } from "../../../services/api";
+import { User } from "../../../interfaces/user";
+import { Shop } from "../../../interfaces/shop";
 
 interface Column {
   field: string;
@@ -44,15 +46,24 @@ interface Column {
     TableModule,
     MultiSelectModule,
     ToastModule,
-    Menu,
+    CardModule,
+    AutoCompleteModule,
     DialogModule,
+    PasswordModule,
   ],
-  templateUrl: "./user.html",
-  styleUrl: "./user.scss",
+  templateUrl: "./user-detail.html",
+  styleUrl: "./user-detail.scss",
   providers: [MessageService],
 })
-export class UserComponent implements OnInit {
-  users: User[] = []; // renamed from "products" for clarity
+export class UserDetailComponent implements OnInit {
+  currentUser: User = {
+    code: "",
+    name: "",
+    username: "",
+    password: "",
+    created_at: 0,
+  }; // renamed from "products" for clarity
+
   cols: Column[] = [];
   selectedColumns: Column[] = [];
   loading = false;
@@ -63,6 +74,13 @@ export class UserComponent implements OnInit {
   userForm: FormGroup | null = null;
   visible: boolean = false;
   shopID = 0;
+  userID = 0;
+  // Properties for user detail form
+
+  // Properties for shop autocomplete
+  selectedShop: any = null;
+  shopOptions: any[] = [];
+  filteredItems: any[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -78,27 +96,16 @@ export class UserComponent implements OnInit {
         ? parseInt(params.get("shop_id") || "0")
         : 0;
     });
-    this.initColumns();
-    this.fetchUsers();
+    this.fetchData();
+    this.initShopOptions();
   }
 
-  private initColumns() {
-    this.cols = [
-      { field: "id", header: "Code" },
-      { field: "name", header: "Name" },
-      { field: "username", header: "Username" },
-      //   { field: "email", header: "Email" },
-      { field: "created_at", header: "Created At" },
-      { field: "updated_at", header: "Last Login" },
-    ];
-    this.selectedColumns = [...this.cols];
-  }
-
-  private fetchUsers() {
+  private fetchData() {
     this.loading = true;
-    this.apiService.getList<{ users: User[] }>("/users").subscribe({
+    let id = this.activatedRoute.snapshot.paramMap.get("id") || 0;
+    this.apiService.getDetail<{ user: User }>("/users", id).subscribe({
       next: (res) => {
-        this.users = res.users || []; // assuming API returns an array of User
+        this.currentUser = res.user || {}; // assuming API returns an array of User
         this.loading = false;
         this.cd.detectChanges();
       },
@@ -112,12 +119,30 @@ export class UserComponent implements OnInit {
       },
     });
   }
+  private initShopOptions() {
+    this.apiService.getList<{ shops: Shop[] }>("/shops").subscribe({
+      next: (res) => {
+        this.shopOptions = (res.shops || []).map((shop) => ({
+          label: shop.shop_name || "",
+          value: shop.shop_name,
+          id: shop.id, // or shop.id if you want just the id
+        }));
+        this.filteredItems = this.shopOptions;
+      },
+      error: (err) => {
+        this.messageService.add({
+          severity: "error",
+          summary: "Error",
+          detail: err.error?.message || "Failed to fetch shops",
+        });
+      },
+    });
+  }
+
   onRowClick(data: any) {
     if (this.shopID > 0) {
       this.router.navigate(["/transactions"]);
-      return;
     }
-    this.router.navigate(["/users", data.id]);
   }
   onActionClick(event: MouseEvent): void {
     event.stopPropagation(); // Ngăn sự kiện lan lên <tr>
@@ -152,7 +177,7 @@ export class UserComponent implements OnInit {
             severity: "success",
             summary: "User Created",
           });
-          this.fetchUsers();
+          this.fetchData();
           this.closeDialog();
         },
         error: (err) => {
@@ -172,7 +197,7 @@ export class UserComponent implements OnInit {
               severity: "success",
               summary: "User Updated",
             });
-            this.fetchUsers();
+            this.fetchData();
             this.closeDialog();
           },
           error: (err) => {
@@ -230,5 +255,13 @@ export class UserComponent implements OnInit {
       default:
         return "info";
     }
+  }
+
+  // Optionally, add a filter method for autocomplete (if needed by template)
+  filterShops(event: any) {
+    const query = event.query.toLowerCase();
+    this.filteredItems = this.shopOptions.filter((option) =>
+      option.label.toLowerCase().includes(query)
+    );
   }
 }

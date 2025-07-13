@@ -58,7 +58,7 @@ export class Login {
     this.loading = true;
     const loginData = this.loginForm.value;
 
-    this.api.create("auth/login", loginData).subscribe({
+    this.api.create("/auth/login", loginData).subscribe({
       next: (res: any) => {
         this.loading = false;
         console.log("Res: " + JSON.stringify(res));

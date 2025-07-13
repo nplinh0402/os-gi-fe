@@ -19,6 +19,8 @@ import { ApiService } from "../../services/api";
 import { Menu } from "primeng/menu";
 import { DialogModule } from "primeng/dialog";
 import { FormBuilder, Validators } from "@angular/forms";
+import { ConfirmDialogModule } from "primeng/confirmdialog";
+import { ConfirmationService } from "primeng/api";
 interface Column {
   field: string;
   header: string;
@@ -45,16 +47,17 @@ interface Column {
     Menu,
     DialogModule,
     ReactiveFormsModule,
+    ConfirmDialogModule,
   ],
   templateUrl: "./shop.html",
   styleUrl: "./shop.scss",
-  providers: [ShopService, MessageService],
+  providers: [ShopService, MessageService, ConfirmationService],
 })
 export class ShopComponent {
   shops!: Shop[];
 
   cols!: Column[];
-  dialogMode: "create" | "view" | "edit" = "create";
+  dialogMode: "create" | "view" | "edit" | "delete" = "create";
   selectedShop: Shop | null = null;
   shopForm: FormGroup | null = null;
   visible: boolean = false;
@@ -67,7 +70,8 @@ export class ShopComponent {
     private readonly messageService: MessageService,
     private readonly cd: ChangeDetectorRef,
     private readonly router: Router,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly confirmationService: ConfirmationService
   ) {}
 
   ngOnInit() {
@@ -110,9 +114,12 @@ export class ShopComponent {
   }
   onRowClick(data: any) {
     const id = data.id;
-    this.router.navigate(["/shops"], { queryParams: { shop_id: id } });
+    this.router.navigate(["/users"], { queryParams: { shop_id: id } });
   }
-  openDialog(mode: "create" | "view" | "edit", shop?: Shop) {
+  onActionClick(event: MouseEvent): void {
+    event.stopPropagation(); // Ngăn sự kiện lan lên <tr>
+  }
+  openDialog(mode: "create" | "view" | "edit" | "delete", shop?: Shop) {
     shop ??= {
       id: 0,
       shop_name: "",
@@ -126,12 +133,14 @@ export class ShopComponent {
     };
     this.dialogMode = mode;
     this.selectedShop = { ...shop };
+
     this.shopForm = this.fb.group({
       shop_name: [shop.shop_name, Validators.required],
       account_name: [shop.account_name, Validators.required],
       email: [shop.email, [Validators.required, Validators.email]],
       phone_number: [shop.phone_number, Validators.required],
     });
+
     if (mode === "view") {
       this.shopForm.disable();
     } else {
@@ -160,24 +169,62 @@ export class ShopComponent {
       {
         label: "Delete",
         icon: "pi pi-fw pi-trash",
+        command: () => this.confirmDelete(shop),
       },
     ];
   }
+
+  confirmDelete(shop: Shop) {
+    this.confirmationService.confirm({
+      message: `Are you sure you want to delete the shop '${shop.shop_name}'?`,
+      header: "Confirm Delete",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => {
+        this.deleteShop(shop);
+      },
+    });
+  }
+
+  private deleteShop(shop: Shop) {
+    this.apiService.delete(`/shops`, shop.id || 0).subscribe({
+      next: (response) => {
+        this.messageService.add({
+          severity: "success",
+          summary: "Shop Deleted",
+          detail: "Shop has been deleted successfully",
+        });
+        this.fetchData();
+        this.closeDialog();
+      },
+      error: (err) => {
+        console.error("Error deleting shop:", err);
+        this.messageService.add({
+          severity: "error",
+          summary: "Delete Failed",
+          detail: err.error?.message || "Could not delete shop",
+        });
+      },
+    });
+  }
   onSubmit() {
-    if (!this.shopForm?.valid) return;
+    if (!this.shopForm?.valid) {
+      return;
+    }
     const shopData = this.shopForm.value;
-    console.log(this.dialogMode);
+
     if (this.dialogMode === "create") {
       this.apiService.create("/shops", shopData).subscribe({
-        next: () => {
+        next: (response) => {
           this.messageService.add({
             severity: "success",
             summary: "Shop Created",
+            detail: "Shop has been created successfully",
           });
           this.fetchData();
           this.closeDialog();
         },
         error: (err) => {
+          console.error("Error creating shop:", err);
           this.messageService.add({
             severity: "error",
             summary: "Create Failed",
@@ -189,15 +236,17 @@ export class ShopComponent {
       this.apiService
         .update(`/shops`, this.selectedShop.id || 0, shopData)
         .subscribe({
-          next: () => {
+          next: (response) => {
             this.messageService.add({
               severity: "success",
               summary: "Shop Updated",
+              detail: "Shop has been updated successfully",
             });
             this.fetchData();
             this.closeDialog();
           },
           error: (err) => {
+            console.error("Error updating shop:", err);
             this.messageService.add({
               severity: "error",
               summary: "Update Failed",
