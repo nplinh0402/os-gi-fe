@@ -11,6 +11,7 @@ interface Market {
   id: number;
   name: string;
   url: string;
+  image?: string;
 }
 
 @Component({
@@ -38,21 +39,25 @@ export class MarketComponent implements OnInit {
         id: 1,
         name: "CoinMarketCap",
         url: "https://coinmarketcap.com/",
+        image: "./images/coin_market_cap.png",
       },
       {
         id: 2,
         name: "CoinMarketCap",
         url: "https://coinmarketcap.com/",
+        image: "./images/coin_market_cap.png",
       },
       {
         id: 3,
         name: "CoinMarketCap",
         url: "https://coinmarketcap.com/",
+        image: "./images/coin_market_cap.png",
       },
       {
         id: 4,
         name: "CoinMarketCap",
         url: "https://coinmarketcap.com/",
+        image: "./images/coin_market_cap.png",
       },
     ];
   }
@@ -71,6 +76,7 @@ export class MarketComponent implements OnInit {
         id: 4,
         name: "",
         url: "",
+        image: "",
       },
       // Add more mock or fetched data
     ];

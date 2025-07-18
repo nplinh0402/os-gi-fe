@@ -214,13 +214,13 @@ export class DrawerHeadless {
   closeCallback(e: any): void {
     this.drawerRef.close(e);
   }
+  currentUserName = localStorage.getItem("namé");
   // Removed local menuItems definition, now using imported menuItems
   get menuItems() {
     return menuItems;
   }
   get filteredMenuItems(): MenuItem[] {
     const role = localStorage.getItem("role") || "";
-    console.log(role);
     return this.menuItems.filter(
       (item) => !item.roles || item.roles.includes(role)
     );
